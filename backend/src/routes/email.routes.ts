@@ -11,6 +11,9 @@ const client = new OAuth2Client();
 
 router.post("/google-exchange-code", async (req, res) => {
   const { code } = req.body;
+  if(!code){
+    res.status(400).json({ error: "Code is empty" });
+  }
 
   const oauth2 = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
@@ -20,6 +23,10 @@ router.post("/google-exchange-code", async (req, res) => {
 
   const { tokens } = await oauth2.getToken(code);
 
+  if(!tokens){
+    res.status(400).json({ error: "Token is empty" });
+  }
+
   res.json({
     access_token: tokens.access_token,
     refresh_token: tokens.refresh_token
@@ -27,14 +34,13 @@ router.post("/google-exchange-code", async (req, res) => {
 });
 
 router.post("/get-emails", async (req, res) => {
-  const {  access_token } = req.body;
+  const { access_token } = req.body;
   const userInfo = await getUserInfo(access_token);
   try {
     // verify ID token → get user email
     // const email = await verifyGoogleToken(access_token);
     // console.log(email, '22222')
     const emails = await readEmails(userInfo.email, access_token);
-    console.log(emails[0].parts[0]?.body.subject, '4444444')
     // emails.map(email => {
     //   return {
     //     uid: email.attributes?.uid,
@@ -43,7 +49,7 @@ router.post("/get-emails", async (req, res) => {
     //     date: email?.parts[0]?.body?.date[0]
     //   }
     // })
-    res.json({ emails });
+    res.json({emails});
   } catch (e) {
     console.error("IMAP error:", e);
     res.status(500).json({ error: "Failed to read emails" });

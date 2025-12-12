@@ -32,5 +32,21 @@ export async function readEmails(email: string, accessToken: string) {
     // markSeen: false,
   });
 
-  return results;
+   // 2️⃣ Sort by newest
+   const sorted = results.sort((a, b) => b.seqNo - a.seqNo);
+
+   // 3️⃣ Take latest 10
+   const latest = sorted.slice(0, 100);
+ 
+   // 4️⃣ Extract subjects and data
+   const emails = latest.map(msg => {
+     const headerPart = msg.parts.find(p => p.which === 'HEADER.FIELDS (FROM TO SUBJECT DATE)');
+ 
+     const parsedHeader = imaps.getParts(msg.parts)
+       .find(p => p.which === 'HEADER.FIELDS (FROM TO SUBJECT DATE)'); 
+     return headerPart
+   });
+ 
+   return emails;
+
 }
