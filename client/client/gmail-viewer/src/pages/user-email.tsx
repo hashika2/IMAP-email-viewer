@@ -3,21 +3,24 @@ import { type CredentialResponse } from '@react-oauth/google';
 import { useEffect, useState } from 'react';
 import { getUserEmails } from '../api/mail-server.service';
 import EmailaViewer from '../components/EmailViewer';
-import { getAccessToken } from '../session/store-data';
+import { getAccessToken, removeAccessToken } from '../session/store-data';
+import { useNavigate } from 'react-router-dom';
 
 const UserEmail = () => {
     const [emailsInfo, setEmailsInfo] = useState<any[]>([])
     const [currentPage, setCurrentPage] = useState(1);
     const [emailsPerPage] = useState(10);
 
+    const navigate = useNavigate();
+
     // Get current emails for pagination
     const indexOfLastEmail = currentPage * emailsPerPage;
     const indexOfFirstEmail = indexOfLastEmail - emailsPerPage;
     const currentEmails = emailsInfo.slice(indexOfFirstEmail, indexOfLastEmail);
 
-    const access_token = getAccessToken()
 
     useEffect(() => {
+        const access_token = getAccessToken()
         handleCredentialResponse(access_token as CredentialResponse)
     }, [])
 
@@ -33,10 +36,16 @@ const UserEmail = () => {
             });
     }
 
+    const handleLogout = () => {
+        removeAccessToken();
+        navigate('/');
+    };
+
     // Change page
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     return <>
+        <button className='border' onClick={handleLogout}>Logout</button>
         {currentEmails.length == 0 && <div>Loading ....</div>}
         {
             currentEmails.length > 0 && currentEmails.map((email, index) => (

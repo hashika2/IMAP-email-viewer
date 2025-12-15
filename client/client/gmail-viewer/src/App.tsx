@@ -3,15 +3,18 @@ import { Route, Routes } from 'react-router-dom';
 import UserEmail from './pages/user-email';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleAuth from './pages/google-auth';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
 
   return (
-    <GoogleOAuthProvider clientId="YOUR_CLIENT_ID_HERE"> {/* Replace with your actual Client ID */}
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID}>
       <div>
         <Routes>
+          {/* <Route element={<ProtectedRoute />}> */}
+            <Route path="/user" element={< UserEmail/>} />
+          {/* </Route> */}
           <Route path="/" element={<GoogleAuth />} />
-          <Route path="/user" element={< UserEmail/>} />
         </Routes>
       </div>
     </GoogleOAuthProvider>

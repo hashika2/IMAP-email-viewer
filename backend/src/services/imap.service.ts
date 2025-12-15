@@ -16,9 +16,9 @@ export async function readEmails(email: string, accessToken: string) {
       port: 993,
       tls: true,
       tlsOptions: { rejectUnauthorized: false },
-      authTimeout: 10000,     // <-- FIX
-      connTimeout: 10000,     // <-- FIX
-      socketTimeout: 10000,   // <-- FIX
+      authTimeout: 10000, 
+      connTimeout: 10000,
+      socketTimeout: 10000,
     },
   };
 
@@ -32,19 +32,19 @@ export async function readEmails(email: string, accessToken: string) {
     // markSeen: false,
   });
 
-   // 2️⃣ Sort by newest
+   // Sort by newest
    const sorted = results.sort((a, b) => b.seqNo - a.seqNo);
 
-   // 3️⃣ Take latest 10
+   // Take latest 10
    const latest = sorted.slice(0, 100);
  
-   // 4️⃣ Extract subjects and data
+   // Extract subjects and data
    const emails = latest.map(msg => {
      const headerPart = msg.parts.find(p => p.which === 'HEADER.FIELDS (FROM TO SUBJECT DATE)');
  
-     const parsedHeader = imaps.getParts(msg.parts)
-       .find(p => p.which === 'HEADER.FIELDS (FROM TO SUBJECT DATE)'); 
-     return headerPart
+    //  const parsedHeader = imaps.getParts(msg.parts)
+    //    .find(p => p.which === 'HEADER.FIELDS (FROM TO SUBJECT DATE)'); 
+    //  return headerPart
    });
  
    return emails;

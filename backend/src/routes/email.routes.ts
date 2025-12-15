@@ -3,6 +3,8 @@ import { readEmails } from "../services/imap.service";
 import { OAuth2Client } from "google-auth-library";
 import dotenv from 'dotenv';
 import { google } from "googleapis";
+import { getUserInfo, saveUserInfo } from "../services/user-info.service";
+import db from "../models";
 dotenv.config();
 
 const router = Router();
@@ -27,6 +29,9 @@ router.post("/google-exchange-code", async (req, res) => {
     res.status(400).json({ error: "Token is empty" });
   }
 
+  // get user info and save database
+  // await saveUserInfo(tokens.id_token!, tokens);
+
   res.json({
     access_token: tokens.access_token,
     refresh_token: tokens.refresh_token
@@ -37,9 +42,6 @@ router.post("/get-emails", async (req, res) => {
   const { access_token } = req.body;
   const userInfo = await getUserInfo(access_token);
   try {
-    // verify ID token → get user email
-    // const email = await verifyGoogleToken(access_token);
-    // console.log(email, '22222')
     const emails = await readEmails(userInfo.email, access_token);
     // emails.map(email => {
     //   return {
@@ -66,16 +68,6 @@ export async function verifyGoogleToken(idToken: string) {
   if (!payload?.email) throw new Error("Email not found");
 
   return payload.email;
-}
-
-const getUserInfo = async (access_token: string) => {
-  const userInfo = await fetch(
-    "https://www.googleapis.com/oauth2/v2/userinfo",
-    {
-      headers: { Authorization: `Bearer ${access_token}` }
-    }
-  ).then(r => r.json());
-  return userInfo;
 }
 
 export default router;
