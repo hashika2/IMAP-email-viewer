@@ -4,6 +4,7 @@ import '../App.css'
 import { getGoogleExchangeCode } from '../api/mail-server.service';
 import { useNavigate } from 'react-router-dom';
 import { setAccessToken, getAccessToken } from '../session/store-data';
+import { toast } from 'react-toastify';
 
 const GoogleAuth = () => {
     const navigate = useNavigate()
@@ -23,7 +24,11 @@ const GoogleAuth = () => {
                         console.log("Access Token From Backend:", data);
                         setAccessToken(data.access_token)
                         navigate('/user')
-                    });
+                    }).catch((error => {
+                        toast("Access token getting error", {
+                            type:"error"
+                        })
+                    }));
             },
         });
 

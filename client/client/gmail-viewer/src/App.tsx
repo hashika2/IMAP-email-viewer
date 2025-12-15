@@ -4,6 +4,8 @@ import UserEmail from './pages/user-email';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleAuth from './pages/google-auth';
 import ProtectedRoute from './components/ProtectedRoute';
+import { ToastContainer } from 'react-toastify';
+
 
 function App() {
 
@@ -17,6 +19,7 @@ function App() {
           <Route path="/" element={<GoogleAuth />} />
         </Routes>
       </div>
+      <ToastContainer />
     </GoogleOAuthProvider>
   )
 }

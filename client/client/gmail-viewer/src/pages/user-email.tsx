@@ -5,6 +5,7 @@ import { getUserEmails } from '../api/mail-server.service';
 import EmailaViewer from '../components/EmailViewer';
 import { getAccessToken, removeAccessToken } from '../session/store-data';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const UserEmail = () => {
     const [emailsInfo, setEmailsInfo] = useState<any[]>([])
@@ -33,6 +34,9 @@ const UserEmail = () => {
             })
             .catch(error => {
                 console.error('Error:', error);
+                toast("Failed to fetch the emails", {
+                    type:"error"
+                })
             });
     }
 
