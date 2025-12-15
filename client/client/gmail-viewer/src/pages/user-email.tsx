@@ -45,7 +45,7 @@ const UserEmail = () => {
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     return <>
-        <button className='border' onClick={handleLogout}>Logout</button>
+        {/* <button className='border' onClick={handleLogout}>Logout</button> */}
         {currentEmails.length == 0 && <div>Loading ....</div>}
         {
             currentEmails.length > 0 && currentEmails.map((email, index) => (
