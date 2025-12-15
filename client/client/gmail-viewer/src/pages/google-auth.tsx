@@ -1,13 +1,11 @@
-import reactLogo from '../assets/react.svg'
-import viteLogo from '/vite.svg'
-import '../App.css'
 import { getGoogleExchangeCode } from '../api/mail-server.service';
 import { useNavigate } from 'react-router-dom';
-import { setAccessToken, getAccessToken } from '../session/store-data';
+import { setAccessToken } from '../session/store-data';
 import { toast } from 'react-toastify';
+import './google-auth.css'; // We'll create this file for styling
 
 const GoogleAuth = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleLogin = () => {
         const client = window.google.accounts.oauth2.initCodeClient({
@@ -22,12 +20,12 @@ const GoogleAuth = () => {
                     .then((res) => res.json())
                     .then((data) => {
                         console.log("Access Token From Backend:", data);
-                        setAccessToken(data.access_token)
-                        navigate('/user')
-                    }).catch((error => {
+                        setAccessToken(data.access_token);
+                        navigate('/user');
+                    }).catch((() => {
                         toast("Access token getting error", {
                             type:"error"
-                        })
+                        });
                     }));
             },
         });
@@ -35,21 +33,20 @@ const GoogleAuth = () => {
         client.requestCode(); // <-- THIS TRIGGERS GOOGLE OAUTH WINDOW
     };
 
-    return <>
-        <div className='flex'>
-            <a href="https://vite.dev" target="_blank">
-                <img src={viteLogo} className="logo" alt="Vite logo" />
-            </a>
-            <a href="https://react.dev" target="_blank">
-                <img src={reactLogo} className="logo react" alt="React logo" />
-            </a>
+    return (
+        <div className="google-auth-container">
+            <div className="google-takeout-title">
+                <span className="google-word">Google</span>
+                <span className="takeout-word">Takeout</span>
+            </div>
+            <div className="gmail-viewer-banner">
+                Gmail Email Viewer
+            </div>
+            <button className='login-button' onClick={handleLogin}>
+                Login with Google
+            </button>
         </div>
-        <h1>IMAP Gmail Viewer</h1>
-
-        <button className='border' onClick={handleLogin}>
-            Login with Google
-        </button>
-    </>
+    );
 }
 
 export default GoogleAuth;

@@ -1,0 +1,64 @@
+.user-email-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #e0f2f7; /* Light blue background */
+    font-family: 'Roboto', sans-serif;
+    padding: 20px;
+}
+
+.email-list-container {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px;
+}
+
+.loading-text {
+    font-size: 1.5em;
+    color: #616161;
+}
+
+.email-item {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.pagination-container {
+    margin-top: 20px;
+}
+
+.pagination-link {
+    color: #4285F4;
+    padding: 8px 12px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+    border-radius: 4px;
+}
+
+.pagination-link.active {
+    background-color: #4285F4;
+    color: white;
+    border-color: #4285F4;
+}
+
+.pagination-link:hover:not(.active) {
+    background-color: #f2f2f2;
+}
+
+.search-input {
+    padding: 10px;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
