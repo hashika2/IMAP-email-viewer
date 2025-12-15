@@ -31,11 +31,10 @@ export async function readEmails(email: string, accessToken: string) {
     struct: true,
     // markSeen: false,
   });
-
    // Sort by newest
    const sorted = results.sort((a, b) => b.seqNo - a.seqNo);
 
-   // Take latest 10
+   // Take latest 100
    const latest = sorted.slice(0, 100);
  
    // Extract subjects and data
@@ -43,8 +42,9 @@ export async function readEmails(email: string, accessToken: string) {
      const headerPart = msg.parts.find(p => p.which === 'HEADER.FIELDS (FROM TO SUBJECT DATE)');
  
     //  const parsedHeader = imaps.getParts(msg.parts)
-    //    .find(p => p.which === 'HEADER.FIELDS (FROM TO SUBJECT DATE)'); 
-    //  return headerPart
+    //    .find(p => p.which === 'HEADER.FIELDS (FROM TO SUBJECT DATE)');
+
+     return headerPart
    });
  
    return emails;
