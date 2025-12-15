@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { google } from "googleapis";
 import { getUserInfo, saveUserInfo } from "../services/user-info.service";
 import db from "../models";
+import { oauth2Client } from "../config/googleClient";
 dotenv.config();
 
 const router = Router();
@@ -17,13 +18,7 @@ router.post("/google-exchange-code", async (req, res) => {
     res.status(400).json({ error: "Code is empty" });
   }
 
-  const oauth2 = new google.auth.OAuth2(
-      process.env.GOOGLE_CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET,
-      process.env.GOOGLE_REDIRECT_URI,
-  );
-
-  const { tokens } = await oauth2.getToken(code);
+  const { tokens } = await oauth2Client.getToken(code);
 
   if(!tokens){
     res.status(400).json({ error: "Token is empty" });
